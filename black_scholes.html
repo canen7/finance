@@ -1,0 +1,45 @@
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		
+		// 1973 Black-Scholes
+		function BlackScholes(PutCallFlag, S, K, T, r, sigma) {
+			var d1 = (Math.log(S / K) + (r + sigma * sigma / 2) * T) / ( sigma * Math.sqrt(T));
+			var d2 = d1 - sigma * Math.sqrt(T);
+
+			if (PutCallFlag == 'c')
+				return S * cumNormDist(d1) - K * Math.exp(-r * T) * cumNormDist(d2);
+			else
+				return K * Math.exp(-r * T) * cumNormDist(-d2) - S * cumNormDist(-d1);
+
+		}
+
+		function cumNormDist(x){
+			var a1 = 0.31938153;
+			var a2 = -0.356563782;
+			var a3 = 1.781477937;
+			var a4 = -1.821255978;
+			var a5 = 1.330274429;
+
+			if (x < 0)
+				return 1 - cumNormDist(-x);
+			else
+				var k = 1 / (1 + 0.2316419 * x);
+				return 1 - Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI) * k * (a1 + k * (-0.356563782 + k * (1.781477937 + k * (-1.821255978 + k * 1.330274429))));
+		}
+
+
+		console.log('given a stock with price 100 the value of an ATM call expiring in 1 year with an interest rate of 2% for that time period and an implied volatility of 30% is:')
+		console.log(BlackScholes('c', 100, 100, 1, 0.05, 0.30))
+
+
+	</script>
+</head>
+<body>
+
+
+
+</body>
+</html>
+
